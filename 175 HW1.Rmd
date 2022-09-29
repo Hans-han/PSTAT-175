@@ -1,0 +1,54 @@
+---
+title: "175 HW1"
+author: "Zongyi Han"
+date: "2022-09-28"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r cars}
+Data1 <- read.table("vets.txt")
+colnames(Data1) <- c("Vet.time","Vet.cns")
+
+library(survival)
+vet.Surv <- Surv(Data1$Vet.time)
+print(vet.Surv)
+mean(Data1[,1])# Vet.surv == Vet.time
+
+```
+b/c data may be censored
+
+```{r}
+sum(Data1$Vet.cns)
+sum(Data1$Vet.time*Data1$Vet.cns)
+
+mean(vet.Surv)
+
+```
+
+it shows total amount of time that people did finish the study aka not-censored
+
+Surv function is to help distinguish the use of 0/1 or 1/2 of event occurrence.
+
+```{r}
+retire <- read.table("retire.txt", header=TRUE,skip=2)
+
+```
+
+```{r}
+library(survival)
+ret.surv <- Surv(retire$time)
+sfit <- survfit(ret.surv ~ 1)
+plot(sfit,xlab = "time",ylab = "Survival probablity")
+
+```
+```{r}
+summary(sfit)
+```
+In first 50 month ,survival probability is pretty high, at least greater than 65% 
+But the probability is steadlly decreasing
